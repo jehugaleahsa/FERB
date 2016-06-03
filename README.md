@@ -2,6 +2,8 @@
 
 A tool to help quickly create simple OpenXML Excel reports.
 
+Download using NuGet: [FERB](http://www.nuget.org/packages/FERB/)
+
 ## Overview
 EPPlus is a powerful and thorough library for building Excel workbooks, which is why it is at the core of FERB. All that flexibility comes at the cost of complexity, though. I created FERB to make it quick and easy to generate simple reports in Excel. Initially, there will only be support for images, text blocks and tables.
 
