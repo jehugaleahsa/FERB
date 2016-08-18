@@ -46,7 +46,7 @@ namespace FERB
             foreach (IWorksheetContent content in builders)
             {
                 IWorksheetContentBuilder builder = (IWorksheetContentBuilder)content;
-                int rowOffset = 1;
+                int rowOffset = 0;
                 IWorksheetContentBuilder predecessor = builder.Predecessor;
                 if (predecessor != null && lastRowLookup.ContainsKey(predecessor))
                 {

@@ -31,6 +31,7 @@ namespace FERB
             this.headers = new OrderedDictionary();
             this.orderBys = new List<OrderByDefinition>();
             this.nestedBuilders = new List<Func<TModel, int, int, IWorksheetContent>>();
+            this.startingRow = 1;
         }
 
         IWorksheetContentBuilder IWorksheetContentBuilder.Predecessor
@@ -52,9 +53,9 @@ namespace FERB
 
         public ITableBuilder<TModel> StartingAt(int rowNumber, int cellNumber)
         {
-            if (rowNumber < 0)
+            if (rowNumber < 1)
             {
-                throw new ArgumentOutOfRangeException("rowNumber", "The starting row number cannot be negative.");
+                throw new ArgumentOutOfRangeException("rowNumber", "The starting row number cannot be less than one.");
             }
             if (cellNumber < 0)
             {

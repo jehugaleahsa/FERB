@@ -19,6 +19,7 @@ namespace FERB
         internal ImageBuilder(string name)
         {
             this.name = name;
+            this.rowNumber = 1;
             this.cellCount = 1;
             this.scaling = 1.0d;
         }
@@ -36,9 +37,9 @@ namespace FERB
 
         public IImageBuilder StartingAt(int rowNumber, int cellNumber)
         {
-            if (rowNumber < 0)
+            if (rowNumber < 1)
             {
-                throw new ArgumentOutOfRangeException("rowNumber", "The row number cannot be negative.");
+                throw new ArgumentOutOfRangeException("rowNumber", "The row number cannot be less than one.");
             }
             if (cellNumber < 0)
             {
