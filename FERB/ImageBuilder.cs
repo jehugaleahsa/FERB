@@ -19,8 +19,6 @@ namespace FERB
         internal ImageBuilder(string name)
         {
             this.name = name;
-            this.rowNumber = 1;
-            this.cellNumber = 1;
             this.cellCount = 1;
             this.scaling = 1.0d;
         }
@@ -38,13 +36,13 @@ namespace FERB
 
         public IImageBuilder StartingAt(int rowNumber, int cellNumber)
         {
-            if (rowNumber < 1)
+            if (rowNumber < 0)
             {
-                throw new ArgumentOutOfRangeException("rowNumber", "The row number cannot be less than one.");
+                throw new ArgumentOutOfRangeException("rowNumber", "The row number cannot be negative.");
             }
-            if (cellNumber < 1)
+            if (cellNumber < 0)
             {
-                throw new ArgumentOutOfRangeException("cellNumber", "The cell number cannot be less than one.");
+                throw new ArgumentOutOfRangeException("cellNumber", "The cell number cannot be negative.");
             }
             this.rowNumber = rowNumber;
             this.cellNumber = cellNumber;
@@ -110,14 +108,14 @@ namespace FERB
             }
             Image image = imageAccessor();
 
-            ExcelRange range = worksheet.Cells[currentRow, cellNumber, currentRow, cellNumber + cellCount - 1];
+            ExcelRange range = worksheet.Cells[currentRow, cellNumber + 1, currentRow, cellNumber + cellCount];
             range.Merge = true;
 
             Graphics graphics = Graphics.FromImage(image);
             worksheet.Row(currentRow).Height = image.Height * scaling * 72 / graphics.DpiY;
 
             ExcelPicture picture = worksheet.Drawings.AddPicture(name, image);
-            picture.SetPosition(currentRow - 1, 0, cellNumber - 1, 0);
+            picture.SetPosition(currentRow - 1, 0, cellNumber, 0);
             picture.SetSize((int)(scaling * 100));
             return currentRow;
         }

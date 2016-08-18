@@ -25,12 +25,12 @@ namespace FERB
             // Apply style to entire header
             if (StyleApplier != null)
             {
-                int lastCell = startingCell + visibleColmns.Length - 1;
-                ExcelRange headerRow = worksheet.Cells[rowOffset, startingCell, rowOffset, lastCell];
+                int lastCell = startingCell + visibleColmns.Length;
+                ExcelRange headerRow = worksheet.Cells[rowOffset, startingCell + 1, rowOffset, lastCell];
                 StyleApplier(new CellStyle(headerRow.Style));
             }
 
-            int currentCell = startingCell;
+            int currentCell = startingCell + 1;
             // Add header row to the worksheet and apply style
             foreach (ColumnDefinition<TModel> definition in visibleColmns)
             {

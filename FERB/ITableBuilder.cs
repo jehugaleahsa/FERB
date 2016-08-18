@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using OfficeOpenXml.Style;
 
 namespace FERB
 {
@@ -11,6 +10,8 @@ namespace FERB
         ITableBuilder<TModel> StartingAt(int rowNumber, int cellNumber);
 
         ITableBuilder<TModel> WithTitle(string text, Action<ICellStyle> applier = null);
+
+        ITableBuilder<TModel> HideHeader(bool hide = true);
 
         ITableBuilder<TModel> WithHeaderStyleApplied(Action<ICellStyle> applier);
 

@@ -19,8 +19,6 @@ namespace FERB
 
         public TitleBarBuilder()
         {
-            this.rowNumber = 1;
-            this.cellNumber = 1;
             this.cellCount = 1;
         }
 
@@ -37,13 +35,13 @@ namespace FERB
 
         public ITitleBarBuilder StartingAt(int rowNumber, int cellNumber)
         {
-            if (rowNumber < 1)
+            if (rowNumber < 0)
             {
-                throw new ArgumentOutOfRangeException("rowNumber", "The row number cannot be less than one.");
+                throw new ArgumentOutOfRangeException("rowNumber", "The row number cannot be negative.");
             }
-            if (cellNumber < 1)
+            if (cellNumber < 0)
             {
-                throw new ArgumentOutOfRangeException("cellNumber", "The cell number cannot be less than one.");
+                throw new ArgumentOutOfRangeException("cellNumber", "The cell number cannot be negative.");
             }
             this.rowNumber = rowNumber;
             this.cellNumber = cellNumber;
@@ -75,8 +73,8 @@ namespace FERB
         int IWorksheetContent.Save(ExcelWorksheet worksheet, int rowOffset)
         {
             int currentRow = rowOffset + rowNumber;
-            int lastCell = cellNumber + cellCount - 1;
-            var range = worksheet.Cells[currentRow, cellNumber, currentRow, lastCell];
+            int lastCell = cellNumber + cellCount;
+            var range = worksheet.Cells[currentRow, cellNumber + 1, currentRow, lastCell];
             range.Merge = true;
             range.Value = title;
             if (applier != null)

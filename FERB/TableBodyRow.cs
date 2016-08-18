@@ -22,7 +22,7 @@ namespace FERB
         {
             var visibleColumns = columnDefinitions.Where(d => d.Configuration.IsVisible).ToArray();
 
-            int currentCell = startingCell;
+            int currentCell = startingCell + 1;
             foreach (var definition in visibleColumns)
             {
                 var cell = worksheet.Cells[rowOffset, currentCell];

@@ -42,18 +42,17 @@ namespace FERB
 
         internal void Save(ExcelWorksheet worksheet)
         {
-            int currentRow = 0;
             Dictionary<IWorksheetContentBuilder, int> lastRowLookup = new Dictionary<IWorksheetContentBuilder, int>();
             foreach (IWorksheetContent content in builders)
             {
                 IWorksheetContentBuilder builder = (IWorksheetContentBuilder)content;
-                int rowOffset = 0;
+                int rowOffset = 1;
                 IWorksheetContentBuilder predecessor = builder.Predecessor;
                 if (predecessor != null && lastRowLookup.ContainsKey(predecessor))
                 {
                     rowOffset = lastRowLookup[predecessor];
                 }
-                currentRow = content.Save(worksheet, rowOffset);
+                int currentRow = content.Save(worksheet, rowOffset);
                 lastRowLookup[builder] = currentRow;
             }
             if (isAuto)

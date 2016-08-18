@@ -21,6 +21,7 @@ namespace FERB
         private int startingCell;
         private string title;
         private Action<ICellStyle> titleStyleApplier;
+        private bool isHeaderHidden;
         private Action<ICellStyle> headerStyleApplier;
         private Action<ICellStyle> styleApplier;
         private IEnumerable<TModel> models;
@@ -29,8 +30,6 @@ namespace FERB
         {
             this.headers = new OrderedDictionary();
             this.orderBys = new List<OrderByDefinition>();
-            this.startingRow = 1;
-            this.startingCell = 1;
             this.nestedBuilders = new List<Func<TModel, int, int, IWorksheetContent>>();
         }
 
@@ -53,13 +52,13 @@ namespace FERB
 
         public ITableBuilder<TModel> StartingAt(int rowNumber, int cellNumber)
         {
-            if (rowNumber < 1)
+            if (rowNumber < 0)
             {
-                throw new ArgumentOutOfRangeException("rowNumber", "The starting row number cannot be less than 1.");
+                throw new ArgumentOutOfRangeException("rowNumber", "The starting row number cannot be negative.");
             }
-            if (cellNumber < 1)
+            if (cellNumber < 0)
             {
-                throw new ArgumentOutOfRangeException("cellNumber", "The starting cell number cannot be less than 1.");
+                throw new ArgumentOutOfRangeException("cellNumber", "The starting cell number cannot be negative.");
             }
             this.startingRow = rowNumber;
             this.startingCell = cellNumber;
@@ -88,6 +87,24 @@ namespace FERB
         INestedTableBuilder<TModel> INestedTableBuilder<TModel>.WithTitle(string text, Action<ICellStyle> applier)
         {
             WithTitle(text, applier);
+            return this;
+        }
+
+        public ITableBuilder<TModel> HideHeader(bool hide = true)
+        {
+            this.isHeaderHidden = hide;
+            return this;
+        }
+
+        IOrderedTableBuilder<TModel> IOrderedTableBuilder<TModel>.HideHeader(bool hide)
+        {
+            HideHeader(hide);
+            return this;
+        }
+
+        INestedTableBuilder<TModel> INestedTableBuilder<TModel>.HideHeader(bool hide)
+        {
+            HideHeader(hide);
             return this;
         }
 
@@ -245,9 +262,12 @@ namespace FERB
             applyCellStyle(worksheet, currentRow, recordCount, columnDefinitions);
 
             // Apply any column configurations
-            TableHeaderRow<TModel> header = new TableHeaderRow<TModel>(startingCell, columnDefinitions);
-            header.StyleApplier = headerStyleApplier;
-            currentRow = header.Save(worksheet, currentRow);
+            if (!isHeaderHidden)
+            {
+                TableHeaderRow<TModel> header = new TableHeaderRow<TModel>(startingCell, columnDefinitions);
+                header.StyleApplier = headerStyleApplier;
+                currentRow = header.Save(worksheet, currentRow);
+            }
 
             var records = sortModels();
             foreach (TModel model in records)
@@ -273,8 +293,8 @@ namespace FERB
                 return currentRow;
             }
             int visibleColumnCount = definitions.Where(d => d.Configuration.IsVisible).Count();
-            int lastCell = startingCell + visibleColumnCount - 1;  // Subtract since the end cell is inclusive
-            ExcelRange range = worksheet.Cells[currentRow, startingCell, currentRow, lastCell];
+            int lastCell = startingCell + visibleColumnCount;  // Subtract since the end cell is inclusive
+            ExcelRange range = worksheet.Cells[currentRow, startingCell + 1, currentRow, lastCell];
             range.Merge = true;
             range.Value = title;
             if (titleStyleApplier != null)
@@ -293,9 +313,13 @@ namespace FERB
                 return;
             }
             int lastRow = currentRow + recordCount;  // Includes row for the header
+            if (isHeaderHidden)
+            {
+                --lastRow;
+            }
             int visibleColumnCount = columnDefinitions.Where(d => d.Configuration.IsVisible).Count();
-            int lastCell = startingCell + visibleColumnCount - 1;  // Subtract since the end cell is inclusive
-            ExcelRange range = worksheet.Cells[currentRow, startingCell, lastRow, lastCell];
+            int lastCell = startingCell + visibleColumnCount;  // Subtract since the end cell is inclusive
+            ExcelRange range = worksheet.Cells[currentRow, startingCell + 1, lastRow, lastCell];
             styleApplier(new CellStyle(range.Style));
         }
 

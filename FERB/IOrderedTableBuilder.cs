@@ -14,6 +14,8 @@ namespace FERB
 
         IOrderedTableBuilder<TModel> WithTitle(string title, Action<ICellStyle> applier = null);
 
+        IOrderedTableBuilder<TModel> HideHeader(bool hide = true);
+
         IOrderedTableBuilder<TModel> WithHeaderStyleApplied(Action<ICellStyle> applier);
 
         IOrderedTableBuilder<TModel> WithStyleApplied(Action<ICellStyle> applier);

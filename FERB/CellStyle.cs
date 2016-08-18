@@ -19,6 +19,12 @@ namespace FERB
             set { style.Font.Bold = value; }
         }
 
+        public bool Italic
+        {
+            get { return style.Font.Italic; }
+            set { style.Font.Italic = value; }
+        }
+
         public float FontSize 
         {
             get { return style.Font.Size; }

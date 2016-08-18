@@ -7,6 +7,8 @@ namespace FERB
     {
         bool Bold { get; set; }
 
+        bool Italic { get; set; }
+
         float FontSize { get; set; }
 
         bool WrapText { get; set; }

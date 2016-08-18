@@ -6,6 +6,8 @@ namespace FERB
     {
         INestedTableBuilder<TModel> WithTitle(string text, Action<ICellStyle> applier = null);
 
+        INestedTableBuilder<TModel> HideHeader(bool hide = true);
+
         INestedTableBuilder<TModel> WithHeaderStyleApplied(Action<ICellStyle> applier);
 
         INestedTableBuilder<TModel> WithStyleApplied(Action<ICellStyle> applier);
