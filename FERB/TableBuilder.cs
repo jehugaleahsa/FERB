@@ -7,9 +7,9 @@ using OfficeOpenXml.Style;
 
 namespace FERB
 {
-    internal class TableBuilder<TModel> 
-        : ITableBuilder<TModel>, 
-        IOrderedTableBuilder<TModel>, 
+    internal class TableBuilder<TModel>
+        : ITableBuilder<TModel>,
+        IOrderedTableBuilder<TModel>,
         INestedTableBuilder<TModel>,
         IWorksheetContent
     {
@@ -257,7 +257,10 @@ namespace FERB
             var columnDefinitions = headers.Keys.Cast<string>().Select(n => (ColumnDefinition<TModel>)headers[n]).ToArray();
 
             // Add title to table
-            currentRow = addTitle(worksheet, currentRow, columnDefinitions);
+            if (!String.IsNullOrWhiteSpace(title))
+            {
+                currentRow = addTitle(worksheet, currentRow, columnDefinitions);
+            }
 
             // Apply a style to the entire range
             applyCellStyle(worksheet, currentRow, recordCount, columnDefinitions);
@@ -268,13 +271,12 @@ namespace FERB
                 TableHeaderRow<TModel> header = new TableHeaderRow<TModel>(startingCell, columnDefinitions);
                 header.StyleApplier = headerStyleApplier;
                 currentRow = header.Save(worksheet, currentRow);
+                ++currentRow;
             }
 
             var records = sortModels();
             foreach (TModel model in records)
             {
-                ++currentRow;
-
                 TableBodyRow<TModel> row = new TableBodyRow<TModel>(model, startingCell, columnDefinitions);
                 currentRow = row.Save(worksheet, currentRow);
 
@@ -283,16 +285,15 @@ namespace FERB
                     IWorksheetContent content = nestedBuilder(model, currentRow, startingCell);
                     currentRow = content.Save(worksheet, currentRow);
                 }
+
+                ++currentRow;
             }
+            --currentRow;
             return currentRow;
         }
 
         private int addTitle(ExcelWorksheet worksheet, int currentRow, IEnumerable<ColumnDefinition<TModel>> definitions)
         {
-            if (String.IsNullOrWhiteSpace(title))
-            {
-                return currentRow;
-            }
             int visibleColumnCount = definitions.Where(d => d.Configuration.IsVisible).Count();
             int lastCell = startingCell + visibleColumnCount;  // Subtract since the end cell is inclusive
             ExcelRange range = worksheet.Cells[currentRow, startingCell + 1, currentRow, lastCell];
