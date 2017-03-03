@@ -9,11 +9,10 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>FERB</RootNamespace>
     <AssemblyName>FERB</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>SAK</SccProjectName>
     <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
@@ -40,6 +39,7 @@
     <Compile Include="CellStyle.cs" />
     <Compile Include="ColumnConfiguration.cs" />
     <Compile Include="ColumnDefinition.cs" />
+    <Compile Include="ExcelUtilities.cs" />
     <Compile Include="ICellStyle.cs" />
     <Compile Include="IColumnConfiguration.cs" />
     <Compile Include="IImageBuilder.cs" />

@@ -10,6 +10,8 @@ namespace FERB
 
         IImageBuilder AddImage(string name);
 
+        void WithColumnWidth(string columnName, double? width);
+
         void AutoFitToContents(bool isAuto = true);
     }
 }

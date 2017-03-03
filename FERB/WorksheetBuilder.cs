@@ -6,11 +6,13 @@ namespace FERB
     internal class WorksheetBuilder : IWorksheetBuilder
     {
         private readonly List<IWorksheetContent> builders;
+        private readonly Dictionary<int, double?> columnWidths;
         private bool isAuto;
 
         public WorksheetBuilder()
         {
             this.builders = new List<IWorksheetContent>();
+            this.columnWidths = new Dictionary<int, double?>();
             this.isAuto = true;
         }
 
@@ -33,6 +35,12 @@ namespace FERB
             var builder = new ImageBuilder(name);
             builders.Add(builder);
             return builder;
+        }
+
+        public void WithColumnWidth(string columnName, double? width)
+        {
+            int columnIndex = ExcelUtilities.GetColumnIndex(columnName);
+            this.columnWidths[columnIndex] = width;
         }
 
         public void AutoFitToContents(bool isAuto = true)
@@ -58,6 +66,16 @@ namespace FERB
             if (isAuto)
             {
                 worksheet.Cells.AutoFitColumns();
+            }
+            foreach (var pair in columnWidths)
+            {
+                int columnIndex = pair.Key;
+                double? width = pair.Value;
+                if (width != null)
+                {
+                    ExcelColumn column = worksheet.Column(columnIndex);
+                    column.Width = width.Value;
+                }
             }
         }
     }
