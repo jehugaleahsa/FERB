@@ -1,5 +1,4 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 
 namespace FERB
 {
@@ -12,6 +11,8 @@ namespace FERB
         float FontSize { get; set; }
 
         bool WrapText { get; set; }
+
+        void SetForegroundColor(Color color);
 
         void SetBackgroundColor(Color color);
     }

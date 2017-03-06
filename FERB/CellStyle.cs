@@ -37,6 +37,11 @@ namespace FERB
             set { style.WrapText = value; }
         }
 
+        public void SetForegroundColor(Color color)
+        {
+            style.Font.Color.SetColor(color);
+        }
+
         public void SetBackgroundColor(Color color)
         {
             style.Fill.PatternType = ExcelFillStyle.Solid;
