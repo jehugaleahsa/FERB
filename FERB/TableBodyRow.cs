@@ -18,9 +18,12 @@ namespace FERB
             this.columnDefinitions = columnDefinitions;
         }
 
+        public Action<ICellStyle> StyleApplier { get; set; }
+
         public int Save(ExcelWorksheet worksheet, int rowOffset)
         {
             var visibleColumns = columnDefinitions.Where(d => d.Configuration.IsVisible).ToArray();
+            applyRowStyle(worksheet, rowOffset);
 
             int currentCell = startingCell + 1;
             foreach (var definition in visibleColumns)
@@ -52,6 +55,18 @@ namespace FERB
             {
                 cell.Value = String.Format("{0:" + configuration.Format + "}", value);
             }
+        }
+
+        private void applyRowStyle(ExcelWorksheet worksheet, int currentRow)
+        {
+            if (StyleApplier == null)
+            {
+                return;
+            }
+            int visibleColumnCount = columnDefinitions.Where(d => d.Configuration.IsVisible).Count();
+            int lastCell = startingCell + visibleColumnCount;  // Subtract since the end cell is inclusive
+            ExcelRange range = worksheet.Cells[currentRow, startingCell + 1, currentRow, lastCell];
+            StyleApplier(new CellStyle(range.Style));
         }
     }
 }

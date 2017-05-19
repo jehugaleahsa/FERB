@@ -252,8 +252,7 @@ namespace FERB
                 // There are no columns, so we do not display anything
                 return currentRow;
             }
-
-            int recordCount = models == null ? 0 : models.Count();
+            
             var columnDefinitions = headers.Keys.Cast<string>().Select(n => (ColumnDefinition<TModel>)headers[n]).ToArray();
 
             // Add title to table
@@ -261,9 +260,6 @@ namespace FERB
             {
                 currentRow = addTitle(worksheet, currentRow, columnDefinitions);
             }
-
-            // Apply a style to the entire range
-            applyCellStyle(worksheet, currentRow, recordCount, columnDefinitions);
 
             // Apply any column configurations
             if (!isHeaderHidden)
@@ -278,6 +274,7 @@ namespace FERB
             foreach (TModel model in records)
             {
                 TableBodyRow<TModel> row = new TableBodyRow<TModel>(model, startingCell, columnDefinitions);
+                row.StyleApplier = styleApplier;
                 currentRow = row.Save(worksheet, currentRow);
 
                 foreach (var nestedBuilder in nestedBuilders)
@@ -306,23 +303,6 @@ namespace FERB
             range.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
             ++currentRow;
             return currentRow;
-        }
-
-        private void applyCellStyle(ExcelWorksheet worksheet, int currentRow, int recordCount, ColumnDefinition<TModel>[] columnDefinitions)
-        {
-            if (styleApplier == null)
-            {
-                return;
-            }
-            int lastRow = currentRow + recordCount;  // Includes row for the header
-            if (isHeaderHidden)
-            {
-                --lastRow;
-            }
-            int visibleColumnCount = columnDefinitions.Where(d => d.Configuration.IsVisible).Count();
-            int lastCell = startingCell + visibleColumnCount;  // Subtract since the end cell is inclusive
-            ExcelRange range = worksheet.Cells[currentRow, startingCell + 1, lastRow, lastCell];
-            styleApplier(new CellStyle(range.Style));
         }
 
         private IEnumerable<TModel> sortModels()
