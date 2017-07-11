@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using OfficeOpenXml.Style;
 
@@ -37,6 +38,24 @@ namespace FERB
             set { style.WrapText = value; }
         }
 
+        public HorizontalAlignment HorizontalAlignment
+        {
+            get { return (HorizontalAlignment)style.HorizontalAlignment; }
+            set { style.HorizontalAlignment = (ExcelHorizontalAlignment)value; }
+        }
+
+        public VerticalAlignment VerticalAlignment
+        {
+            get { return (VerticalAlignment)style.VerticalAlignment; }
+            set { style.VerticalAlignment = (ExcelVerticalAlignment)value; }
+        }
+
+        public string Format
+        {
+            get { return style.Numberformat.Format; }
+            set { style.Numberformat.Format = value; }
+        }
+
         public void SetForegroundColor(Color color)
         {
             style.Font.Color.SetColor(color);
@@ -46,6 +65,32 @@ namespace FERB
         {
             style.Fill.PatternType = ExcelFillStyle.Solid;
             style.Fill.BackgroundColor.SetColor(color);
+        }
+
+        public void SetBorder(Border border = Border.Outline, BorderStyle borderStyle = BorderStyle.Thin, Color? color = null)
+        {
+            List<ExcelBorderItem> items = new List<ExcelBorderItem>();
+            if (border.HasFlag(Border.Bottom))
+            {
+                items.Add(style.Border.Bottom);                
+            }
+            if (border.HasFlag(Border.Top))
+            {
+                items.Add(style.Border.Top);
+            }
+            if (border.HasFlag(Border.Left))
+            {
+                items.Add(style.Border.Left);
+            }
+            if (border.HasFlag(Border.Right))
+            {
+                items.Add(style.Border.Right);
+            }
+            foreach (var item in items)
+            {
+                item.Style = (ExcelBorderStyle)borderStyle;
+                item.Color.SetColor(color ?? Color.Black);
+            }
         }
     }
 }

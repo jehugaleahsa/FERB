@@ -12,8 +12,16 @@ namespace FERB
 
         bool WrapText { get; set; }
 
+        HorizontalAlignment HorizontalAlignment { get; set; }
+
+        VerticalAlignment VerticalAlignment { get; set; }
+
+        string Format { get; set; }
+
         void SetForegroundColor(Color color);
 
         void SetBackgroundColor(Color color);
+
+        void SetBorder(Border border = Border.Outline, BorderStyle borderStyle = BorderStyle.Thin, Color? color = null);
     }
 }

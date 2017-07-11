@@ -36,10 +36,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Border.cs" />
+    <Compile Include="BorderStyle.cs" />
     <Compile Include="CellStyle.cs" />
     <Compile Include="ColumnConfiguration.cs" />
     <Compile Include="ColumnDefinition.cs" />
     <Compile Include="ExcelUtilities.cs" />
+    <Compile Include="HorizontalAlignment.cs" />
     <Compile Include="ICellStyle.cs" />
     <Compile Include="IColumnConfiguration.cs" />
     <Compile Include="IImageBuilder.cs" />
@@ -57,6 +60,7 @@
     <Compile Include="TableBuilder.cs" />
     <Compile Include="TableHeaderRow.cs" />
     <Compile Include="TitleBarBuilder.cs" />
+    <Compile Include="VerticalAlignment.cs" />
     <Compile Include="WorkbookBuilder.cs" />
     <Compile Include="WorksheetBuilder.cs" />
   </ItemGroup>
