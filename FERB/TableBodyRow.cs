@@ -47,7 +47,7 @@ namespace FERB
 
             // Set value
             var value = definition.Accessor(model);
-            if (configuration == null || configuration.Format == null)
+            if (configuration == null || configuration.Format == null || value == null)
             {
                 cell.Value = value;
             }
