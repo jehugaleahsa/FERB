@@ -1,7 +1,7 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFrameworks>netstandard2.0;net451</TargetFrameworks>
     <NeutralLanguage>en-Us</NeutralLanguage>
     <Description>Quickly build simple reports in Excel OpenXML format.</Description>
     <Copyright>Copyright © 2016</Copyright>
@@ -10,9 +10,14 @@
     <RepositoryUrl>https://github.com/jehugaleahsa/FERB</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>EPPlus Excel Open Office XML report builder building reporting generator generate table</PackageTags>
-    <PackageReleaseNotes>Migrate to .NET Standard 2.0</PackageReleaseNotes>
+    <PackageReleaseNotes>Missing support for .NET Framework 4.5.1</PackageReleaseNotes>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>FERB.snk</AssemblyOriginatorKeyFile>
+    <Version>1.0.1</Version>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'net451' ">
+    <DefineConstants>$(DefineConstants);NET45</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
