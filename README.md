@@ -1,3 +1,5 @@
+> *Archived 2026-03-28*: This project is very old and will no longer be maintained.
+
 # Fast Excel Report Builder (FERB)
 
 A tool to help quickly create simple OpenXML Excel reports.
